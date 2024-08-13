@@ -111,10 +111,10 @@ namespace Bmi.Api.Tests
 
       // Assert
       Assert.NotNull(result);
-      var okResult = result.Result as OkObjectResult;
-      Assert.NotNull(okResult);
-      Assert.AreEqual(400, okResult.StatusCode);
-      Assert.AreEqual("Height and weight must be positive values.", okResult.Value);
+      var badResult = result.Result as BadRequestObjectResult;
+      Assert.NotNull(badResult);
+      Assert.AreEqual(400, badResult.StatusCode);
+      Assert.AreEqual("Height and weight must be positive values.", badResult.Value);
     }
 
     [Test]
@@ -132,10 +132,10 @@ namespace Bmi.Api.Tests
 
       // Assert
       Assert.NotNull(result);
-      var okResult = result.Result as OkObjectResult;
-      Assert.NotNull(okResult);
-      Assert.AreEqual(400, okResult.StatusCode);
-      Assert.AreEqual("Height and weight must be positive values.", okResult.Value);
+      var badResult = result.Result as BadRequestObjectResult;
+      Assert.NotNull(badResult);
+      Assert.AreEqual(400, badResult.StatusCode);
+      Assert.AreEqual("Height and weight must be positive values.", badResult.Value);
     }
 
     [Test]
@@ -154,7 +154,7 @@ namespace Bmi.Api.Tests
 
       // Assert
       Assert.NotNull(result);
-      var okResult = result.Result as OkObjectResult;
+      var okResult = result.Result as ObjectResult;
       Assert.NotNull(okResult);
       Assert.AreEqual(500, okResult.StatusCode);
       Assert.AreEqual("Internal server error: Test exception", okResult.Value);
