@@ -10,4 +10,6 @@ To run this properly please make sure you have Docker for windows installed.
 
 - Height is in cm and Weight is in kg
 
-- there are no tokens yet but this project is still under development, more update in the future
+There are validation in place
+
+Height and weight must be positive
