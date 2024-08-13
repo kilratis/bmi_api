@@ -154,10 +154,10 @@ namespace Bmi.Api.Tests
 
       // Assert
       Assert.NotNull(result);
-      var okResult = result.Result as ObjectResult;
-      Assert.NotNull(okResult);
-      Assert.AreEqual(500, okResult.StatusCode);
-      Assert.AreEqual("Internal server error: Test exception", okResult.Value);
+      var objResult = result.Result as ObjectResult;
+      Assert.NotNull(objResult);
+      Assert.AreEqual(500, objResult.StatusCode);
+      Assert.AreEqual("Internal server error: Test exception", objResult.Value);
     }
   }
 }
