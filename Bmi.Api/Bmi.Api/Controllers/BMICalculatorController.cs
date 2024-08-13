@@ -39,7 +39,6 @@ namespace Bmi.Api.Controllers
         category = "Obesity";
       }
 
-      // Prepare response
       var response = new BmiResponse
       {
         Bmi = bmi,
