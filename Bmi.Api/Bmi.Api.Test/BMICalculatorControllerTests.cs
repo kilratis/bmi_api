@@ -91,10 +91,73 @@ namespace Bmi.Api.Tests
       var okResult = result.Result as OkObjectResult;
       Assert.NotNull(okResult);
       Assert.IsInstanceOf<BmiResponse>(okResult.Value);
-
       var response = okResult.Value as BmiResponse;
       Assert.AreEqual(31.25f, response.Bmi, 0.01f);
       Assert.AreEqual("Obesity", response.Category);
+    }
+
+    [Test]
+    public void CalculateBmi_InvalidHeight_ReturnsBadRequest()
+    {
+      // Arrange
+      var request = new BmiRequest
+      {
+        Height = -180,
+        Weight = 75
+      };
+
+      // Act
+      var result = _controller.CalculateBmi(request);
+
+      // Assert
+      Assert.NotNull(result);
+      var okResult = result.Result as OkObjectResult;
+      Assert.NotNull(okResult);
+      Assert.AreEqual(400, okResult.StatusCode);
+      Assert.AreEqual("Height and weight must be positive values.", okResult.Value);
+    }
+
+    [Test]
+    public void CalculateBmi_InvalidWeight_ReturnsBadRequest()
+    {
+      // Arrange
+      var request = new BmiRequest
+      {
+        Height = 180,
+        Weight = -75
+      };
+
+      // Act
+      var result = _controller.CalculateBmi(request);
+
+      // Assert
+      Assert.NotNull(result);
+      var okResult = result.Result as OkObjectResult;
+      Assert.NotNull(okResult);
+      Assert.AreEqual(400, okResult.StatusCode);
+      Assert.AreEqual("Height and weight must be positive values.", okResult.Value);
+    }
+
+    [Test]
+    public void CalculateBmi_ThrowsException_ReturnsInternalServerError()
+    {
+      // Arrange
+      var request = new BmiRequest
+      {
+        Height = 180,
+        Weight = 75
+      };
+      _cmToMeterConverterMock.Setup(x => x.Convert(request.Height)).Throws(new System.Exception("Test exception"));
+
+      // Act
+      var result = _controller.CalculateBmi(request);
+
+      // Assert
+      Assert.NotNull(result);
+      var okResult = result.Result as OkObjectResult;
+      Assert.NotNull(okResult);
+      Assert.AreEqual(500, okResult.StatusCode);
+      Assert.AreEqual("Internal server error: Test exception", okResult.Value);
     }
   }
 }

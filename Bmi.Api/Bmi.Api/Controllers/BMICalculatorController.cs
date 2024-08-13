@@ -18,34 +18,45 @@ namespace Bmi.Api.Controllers
     [HttpPost]
     public ActionResult<BmiResponse> CalculateBmi([FromBody] BmiRequest request)
     {
-      float heightInMeters = _cmToMeterConverter.Convert(request.Height);
-      float bmi = request.Weight / (heightInMeters * heightInMeters);
-      string category;
+      if (request.Height <= 0 || request.Weight <= 0)
+      {
+        return BadRequest("Height and weight must be positive values.");
+      }
+      try
+      {
+        float heightInMeters = _cmToMeterConverter.Convert(request.Height);
+        float bmi = request.Weight / (heightInMeters * heightInMeters);
+        string category;
 
-      if (bmi < 18.5)
-      {
-        category = "Underweight";
-      }
-      else if (bmi >= 18.5 && bmi < 24.9)
-      {
-        category = "Normal weight";
-      }
-      else if (bmi >= 25 && bmi < 29.9)
-      {
-        category = "Overweight";
-      }
-      else
-      {
-        category = "Obesity";
-      }
+        if (bmi < 18.5)
+        {
+          category = "Underweight";
+        }
+        else if (bmi >= 18.5 && bmi < 24.9)
+        {
+          category = "Normal weight";
+        }
+        else if (bmi >= 25 && bmi < 29.9)
+        {
+          category = "Overweight";
+        }
+        else
+        {
+          category = "Obesity";
+        }
 
-      var response = new BmiResponse
-      {
-        Bmi = bmi,
-        Category = category
-      };
+        var response = new BmiResponse
+        {
+          Bmi = bmi,
+          Category = category
+        };
 
-      return Ok(response);
+        return Ok(response);
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(500, $"Internal server error: {ex.Message}");
+      }
     }
   }
 }
